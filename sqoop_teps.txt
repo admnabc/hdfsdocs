@@ -1,0 +1,32 @@
+wget https://archive.apache.org/dist/sqoop/1.4.6/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz
+
+tar -xvf sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz
+cd sqoop-1.4.6.bin__hadoop-2.0.4-alpha
+mv * /usr/local/sqoop
+export SQOOP_HOME=/usr/local/sqoop
+export PATH=$PATH:$SQOOP_HOME/bin
+source ~/.bashrc
+mv sqoop-env-template.sh sqoop-env.sh
+
+sudo yum install mysql-server
+sudo /sbin/chkconfig --levels 235 mysqld on
+sudo service mysqld start
+sudo mysql_secure_installation
+
+
+To set Remote login in Mysql 
+login as root
+	vi /etc/my.cnf
+# add the below line 	
+bind-address=192.168.112.161(your current ip or hostname)
+
+Login mysql as root and create one remote user
+
+mysql>> create user 'dstream'@'192.168.112.161' identified by 'dstream';
+mysql>> grant all privileges on *.* to 'dstream'@'192.168.112.161' with grant option;
+mysql>> flush privileges;
+mysql>> flush hosts;
+
+To verify login with below command 
+
+mysql -u dstream -h 192.168.112.161 -p
